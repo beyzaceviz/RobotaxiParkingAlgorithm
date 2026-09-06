@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Fast-DDS UDP-only profili.
+  Container'ın /dev/shm'i host'tan ayrı olduğu için varsayılan shared-memory
+  (SHM) transportu container/host arası veri akışını sessizce koparabiliyor:
+  discovery UDP'den tamamlanır (topic listede görünür) ama veri SHM'den akmaya
+  çalıştığı için karşıya ulaşmaz. Bu profil SHM'i kapatıp tüm trafiği UDPv4'e
+  zorlar. FASTRTPS_DEFAULT_PROFILES_FILE ile yüklenir (Dockerfile'da gömülü).
+-->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+    <transport_descriptors>
+        <transport_descriptor>
+            <transport_id>udp_transport</transport_id>
+            <type>UDPv4</type>
+        </transport_descriptor>
+    </transport_descriptors>
+    <participant profile_name="udp_only" is_default_profile="true">
+        <rtps>
+            <userTransports>
+                <transport_id>udp_transport</transport_id>
+            </userTransports>
+            <useBuiltinTransports>false</useBuiltinTransports>
+        </rtps>
+    </participant>
+</profiles>
