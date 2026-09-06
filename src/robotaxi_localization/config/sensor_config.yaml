@@ -1,0 +1,47 @@
+# ~/robotaxi_ws/src/robotaxi_localization/config/sensor_config.yaml
+
+# GPS-IMU Localizer Parameters
+gps_imu_localizer:
+  ros__parameters:
+    # Coordinate system
+    utm_zone: 35
+    publish_rate: 50.0
+    tf_broadcast: true
+    base_frame: 'base_link'
+    map_frame: 'map'
+    
+    # GPS parameters
+    gps_topic: '/gnss'
+    gps_timeout: 2.0
+    min_gps_accuracy: 5.0  # meters
+    
+    # IMU parameters  
+    imu_topic: '/imu/data'
+    imu_timeout: 1.0
+    use_zed_imu: false  # true for ZED2 IMU, false for XSENS
+    
+    # Filter parameters
+    position_covariance: [2.25, 2.25, 4.0]  # x, y, z variance
+    orientation_covariance: [0.01, 0.01, 0.1]  # roll, pitch, yaw
+    
+    # Quality thresholds
+    min_gps_rate: 8.0   # Hz
+    min_imu_rate: 100.0  # Hz
+    max_data_age: 0.5    # seconds
+
+# Sensor Monitor Parameters
+sensor_monitor:
+  ros__parameters:
+    report_interval: 5.0  # seconds
+    gps_bounds:
+      min_lat: 35.0
+      max_lat: 42.0  
+      min_lon: 26.0
+      max_lon: 45.0
+    
+    quality_thresholds:
+      min_gps_rate: 8.0
+      min_imu_rate: 100.0
+      max_data_age: 2.0
+      min_accel_magnitude: 8.0
+      max_accel_magnitude: 15.0

@@ -1,0 +1,44 @@
+# config/bag_test_config.yaml
+gps_imu_localizer:
+  ros__parameters:
+    # Coordinate system  
+    utm_zone: 35
+    publish_rate: 50.0
+    tf_broadcast: true
+    base_frame: 'base_link'
+    map_frame: 'map'
+    
+    # GPS parameters (BAG TEST İÇİN DÜŞÜRÜLDÜ)
+    gps_topic: '/gnss'
+    gps_timeout: 5.0  # Artırıldı
+    min_gps_accuracy: 10.0  # Gevşetildi
+    
+    # IMU parameters
+    imu_topic: '/imu/data'
+    imu_timeout: 2.0  # Artırıldı
+    use_zed_imu: false
+    
+    # Filter parameters  
+    position_covariance: [4.0, 4.0, 6.0]  # Bag testi için artırıldı
+    orientation_covariance: [0.02, 0.02, 0.2]
+    
+    # Quality thresholds (BAG TEST İÇİN DÜŞÜRÜLDÜ)
+    min_gps_rate: 3.0  # 8.0'dan düşürüldü
+    min_imu_rate: 50.0  # 100.0'dan düşürüldü  
+    max_data_age: 2.0  # 0.5'ten artırıldı
+    report_interval: 5.0
+
+sensor_monitor:
+  ros__parameters:
+    report_interval: 5.0
+    gps_bounds:
+      min_lat: 35.0
+      max_lat: 42.0
+      min_lon: 26.0 
+      max_lon: 45.0
+    quality_thresholds:
+      min_gps_rate: 3.0  # Düşürüldü
+      min_imu_rate: 50.0  # Düşürüldü
+      max_data_age: 2.0
+      min_accel_magnitude: 8.0
+      max_accel_magnitude: 15.0
