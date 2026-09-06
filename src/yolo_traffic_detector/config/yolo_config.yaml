@@ -1,0 +1,63 @@
+# YOLO Traffic Detector Configuration for ROS2
+yolo_detector_node:
+  ros__parameters:
+    # Model Configuration
+    model:
+      path: "models/best.pt"  # Relative to package share directory
+      device: "cuda:0"  # Use "cpu" if CUDA not available
+      
+    # Camera Configuration
+    camera:
+      topic: "/zed/zed_node/rgb_raw/image_raw_color"
+      # CameraInfo'dan fx (k[0]) otomatik okunur → mesafe kalibrasyonu çözünürlükten
+      # bağımsız doğru olur. Bu topic gelmezse focal_length_px fallback kullanılır.
+      info_topic: "/zed/zed_node/rgb_raw/camera_info"
+      focal_length_px: 528.2849731445312  # Fallback (CameraInfo yoksa)
+      image_width: 1280
+      image_height: 720
+
+    # Detection Thresholds
+    thresholds:
+      confidence_light: 0.60
+      confidence_sign: 0.50
+
+    # Scoring Weights
+    scoring:
+      weight_confidence: 0.40
+      weight_distance: 0.45
+      weight_priority: 0.30
+      weight_off_axis: 0.20
+
+    # Distance Normalization
+    distance:
+      min_meters: 1.0
+      max_meters: 40.0
+
+    # Temporal Filtering
+    temporal:
+      min_visible_frames_light: 3
+      min_visible_frames_sign: 3
+      class_switch_delay: 2
+      class_switch_confidence_boost: 0.20
+
+    # EMA Parameters
+    ema:
+      alpha_confidence: 0.6
+      alpha_score: 0.5
+      alpha_fps: 0.3
+
+    # Processing
+    processing:
+      max_fps: 30.0  # Limit processing FPS to save resources
+      imgsz: 1280    # YOLO çıkarım çözünürlüğü — uzak/küçük tabelaları daha iyi yakalar
+      publish_debug_image: true
+      ignore_classes: ["yellow_light"]
+
+    # Publishers
+    publishers:
+      detections_topic: "/yolo_detections"
+      debug_image_topic: "/yolo_debug_image"
+      active_light_topic: "/active_traffic_light"
+      active_sign_topic: "/active_traffic_sign"
+      light_distance_topic: "/active_traffic_light_distance"
+      sign_distance_topic: "/active_traffic_sign_distance"
